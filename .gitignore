@@ -1,0 +1,10 @@
+
+target/classes/RestaurantList.txt
+
+*.class
+
+*.iml
+
+.idea/.name
+
+*.xml

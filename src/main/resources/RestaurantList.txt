@@ -1,0 +1,4 @@
+Cola - Cold,0.50
+Coffee - Hot,1.00
+Cheese Sandwich - Cold,2.00
+Steak Sandwich - Hot,4.50
