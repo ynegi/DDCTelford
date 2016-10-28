@@ -28,14 +28,65 @@ public class CafeMenuTest {
         e.g. [“Cola”, “Coffee”, “Cheese Sandwich”] returns 3.5
     */
     @Test
-    public void step1() {
+    public void step1Modified() {
         List<Item> orderedItems = menuItems.stream()
                 .filter(item -> item.getItemDescription().equals("Cola") || item.getItemDescription().equals("Coffee") || item.getItemDescription().equals("Cheese Sandwich"))
                 .collect(Collectors.toList());
 
         Order order = orderBuilder.createOrder(orderedItems);
-        assertEquals(BigDecimal.valueOf(3.50), orderBuilder.calcTotal(order));
-        System.out.println(orderBuilder.generateBill(order));
+        assertEquals(BigDecimal.valueOf(3.85).setScale(2,BigDecimal.ROUND_HALF_EVEN), orderBuilder.calcTotal(order));
+        System.out.println(orderBuilder.generateBill(order) + "\n");
 
     }
+
+    /*
+    step 2
+     */
+    @Test
+    public void whenOrderedItemsOnlyDrink() {
+        List<Item> orderedItems = menuItems.stream()
+                .filter(item -> item.getItemDescription().equals("Cola") || item.getItemDescription().equals("Coffee"))
+                .collect(Collectors.toList());
+        Order order = orderBuilder.createOrder(orderedItems);
+        assertEquals(BigDecimal.valueOf(0.0), orderBuilder.calcServiceCharge(order));
+        System.out.println(orderBuilder.generateBill(order)  + "\n");
+
+    }
+
+    @Test
+    public void calculateServiceChargeWhenAnyFoodOrdered(){
+        List<Item> orderedItems = menuItems.stream()
+                .filter(item -> item.getItemDescription().equals("Cola") || item.getItemDescription().equals("Coffee") || item.getItemDescription().equals("Cheese Sandwich"))
+                .collect(Collectors.toList());
+
+        Order order = orderBuilder.createOrder(orderedItems);
+        assertEquals(BigDecimal.valueOf(3.85).setScale(2,BigDecimal.ROUND_HALF_EVEN), orderBuilder.calcTotal(order));
+        System.out.println(orderBuilder.generateBill(order)  + "\n");
+    }
+
+    @Test
+    public void calculateServiceChargeWhenAnyHotFoodOrdered(){
+        List<Item> orderedItems = menuItems.stream()
+                .filter(item -> item.getItemDescription().equals("Cola") || item.getItemDescription().equals("Coffee")
+                        || item.getItemDescription().equals("Cheese Sandwich") || item.getItemDescription().equals("Steak Sandwich"))
+                .collect(Collectors.toList());
+
+        Order order = orderBuilder.createOrder(orderedItems);
+        assertEquals(new BigDecimal(9.60).setScale(2,BigDecimal.ROUND_HALF_EVEN), orderBuilder.calcTotal(order));
+        System.out.println(orderBuilder.generateBill(order)  + "\n");
+    }
+
+    @Test
+    public void calculateServiceChargeWhenAnyHotFoodOrderedMoreThanTwenty(){
+        menuItems.get(3).setQuantity(new BigDecimal(50));
+        List<Item> orderedItems = menuItems.stream()
+                .filter(item -> item.getItemDescription().equals("Cola") || item.getItemDescription().equals("Coffee")
+                        || item.getItemDescription().equals("Cheese Sandwich") || item.getItemDescription().equals("Steak Sandwich"))
+                .collect(Collectors.toList());
+
+        Order order = orderBuilder.createOrder(orderedItems);
+        assertEquals(new BigDecimal(248.50).setScale(2,BigDecimal.ROUND_HALF_EVEN), orderBuilder.calcTotal(order));
+        System.out.println(orderBuilder.generateBill(order)  + "\n");
+    }
+
 }

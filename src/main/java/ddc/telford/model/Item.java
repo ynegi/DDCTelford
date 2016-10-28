@@ -46,6 +46,10 @@ public class Item {
         return quantity;
     }
 
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
